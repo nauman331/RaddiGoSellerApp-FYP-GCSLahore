@@ -1,12 +1,23 @@
 import "./global.css"
-import { View, Text } from 'react-native'
-import React from 'react'
+import 'react-native-gesture-handler';
+import { NavigationContainer } from "@react-navigation/native"
+import AuthenticatedStack from "./src/navigation/authenticated"
+import UnauthenticatedStack from "./src/navigation/unauthenticated"
+import { View } from "react-native";
 
 const App = () => {
+  const isAuthenticated = false
+
   return (
-    <View className='flex-1 bg-red-500 items-center justify-center'>
-      <Text className='text-white'>App</Text>
-    </View>
+    <NavigationContainer>
+      <View className="flex-1 bg-white p-3">
+        {
+          isAuthenticated ?
+            <AuthenticatedStack />
+            : <UnauthenticatedStack />
+        }
+      </View>
+    </NavigationContainer>
   )
 }
 
