@@ -10,7 +10,7 @@ const App = () => {
 
   return (
     <NavigationContainer>
-      <View className="flex-1 bg-white p-3">
+      <View className="flex-1 bg-gray-100 p-3">
         {
           isAuthenticated ?
             <AuthenticatedStack />
