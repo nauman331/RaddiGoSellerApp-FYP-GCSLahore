@@ -18,7 +18,6 @@ const ForgotPassword: React.FC<{ navigation: any }> = ({ navigation }) => {
             Alert.alert("Error", "Please enter your email address");
             return;
         }
-        // TODO: Implement API call to send OTP
         Alert.alert("Success", "OTP has been sent to your email");
         setStep(2);
     }
@@ -28,7 +27,7 @@ const ForgotPassword: React.FC<{ navigation: any }> = ({ navigation }) => {
             Alert.alert("Error", "Please enter the OTP");
             return;
         }
-        // TODO: Implement API call to verify OTP
+
         Alert.alert("Success", "OTP verified successfully");
         setStep(3);
     }
@@ -42,7 +41,6 @@ const ForgotPassword: React.FC<{ navigation: any }> = ({ navigation }) => {
             Alert.alert("Error", "Passwords do not match");
             return;
         }
-        // TODO: Implement API call to reset password
         Alert.alert("Success", "Password has been reset successfully");
         navigation.navigate("SignIn");
     }

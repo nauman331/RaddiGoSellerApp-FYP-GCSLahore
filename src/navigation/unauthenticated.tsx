@@ -9,6 +9,7 @@ const Stack = createStackNavigator();
 export default function UnauthenticatedStack() {
     return (
         <Stack.Navigator
+            initialRouteName="InitialScreen"
             screenOptions={{ headerShown: false, animation: "slide_from_right" }}>
             <Stack.Screen name="InitialScreen" component={InitialScreen} />
             <Stack.Screen name="SignIn" component={SignIn} />

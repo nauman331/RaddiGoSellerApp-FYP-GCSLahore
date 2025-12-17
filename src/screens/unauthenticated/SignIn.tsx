@@ -3,10 +3,13 @@ import React, { useState } from 'react'
 import { ArrowLeft, Mail, Lock, Eye, EyeClosed } from 'lucide-react-native'
 import { GoogleIcon, FacebookIcon } from '../../assets/Icons'
 import LogoImage from "../../assets/logo.png"
+import { useDispatch } from 'react-redux'
+import { login, setuser } from '../../store/slices/authSlice'
 
 
 
 const SignIn: React.FC<{ navigation: any }> = ({ navigation }) => {
+    const dispatch = useDispatch()
 
     const [email, setEmail] = useState<string>('')
     const [password, setPassword] = useState<string>('')
@@ -15,7 +18,8 @@ const SignIn: React.FC<{ navigation: any }> = ({ navigation }) => {
     const Login = () => {
         try {
             Alert.alert("Login Info", `Email: ${email}\nPassword: ${password}`);
-            navigation.navigate("Home");
+            dispatch(login("dummy-auth-token"));
+            dispatch(setuser({ id: 1, name: "John Doe", email: email }));
         } catch (error) {
             console.error("Login error:", error);
         }
