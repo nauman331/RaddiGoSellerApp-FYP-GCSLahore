@@ -12,7 +12,7 @@ const Header: React.FC = () => {
         dispatch(logout());
     }
     return (
-        <View className='w-full bg-white py-4 px-4 flex-row items-center justify-between'>
+        <View className='w-full bg-transparent py-4 px-4 flex-row items-center justify-between'>
             <View className='flex-row items-center'>
                 <Image
                     source={ProfilePic}
