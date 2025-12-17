@@ -1,7 +1,8 @@
-import { View, Text, TouchableOpacity, TextInput, ScrollView, Alert } from 'react-native'
+import { View, Text, TouchableOpacity, TextInput, ScrollView, Alert, Image } from 'react-native'
 import React, { useState } from 'react'
 import { ArrowLeft, Mail, Lock, Eye, EyeClosed } from 'lucide-react-native'
 import { GoogleIcon, FacebookIcon } from '../../assets/Icons'
+import LogoImage from "../../assets/logo.png"
 
 
 
@@ -14,6 +15,7 @@ const SignIn: React.FC<{ navigation: any }> = ({ navigation }) => {
     const Login = () => {
         try {
             Alert.alert("Login Info", `Email: ${email}\nPassword: ${password}`);
+            navigation.navigate("Home");
         } catch (error) {
             console.error("Login error:", error);
         }
@@ -25,14 +27,21 @@ const SignIn: React.FC<{ navigation: any }> = ({ navigation }) => {
                 <ArrowLeft />
             </TouchableOpacity>
             <Text className="text-lg font-semibold mt-3">Welcome Back</Text>
+
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View className="mt-5 bg-gray-200 p-4 rounded-2xl">
-                    <Text className="text-emerald-600 font-bold">Log in to RaddiGo</Text>
+                    <View className='flex-row items-center justify-between'>
+                        <Text className="text-emerald-600 font-bold">Log in to RaddiGo</Text>
+                        <Image className='h-14 w-14 rounded-lg' source={LogoImage} alt='RaddiGo Logo' />
+                    </View>
+
+
                     <View className="mt-3">
                         <Text className="font-semibold">Email</Text>
                         <View className="flex-row items-center justify-center mt-2 bg-white px-3 h-14 rounded-lg border border-gray-300">
                             <Mail />
                             <TextInput
+                                keyboardType="email-address"
                                 value={email}
                                 onChangeText={(text) => setEmail(text)}
                                 placeholder="Enter your email"

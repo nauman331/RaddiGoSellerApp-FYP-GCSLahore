@@ -1,7 +1,8 @@
-import { View, Text, TouchableOpacity, TextInput, ScrollView } from 'react-native'
+import { View, Text, TouchableOpacity, TextInput, ScrollView, Image } from 'react-native'
 import React, { useState } from 'react'
 import { ArrowLeft, Mail, Lock, Eye, User, Phone } from 'lucide-react-native'
 import { GoogleIcon, FacebookIcon } from '../../assets/Icons'
+import LogoImage from "../../assets/logo.png"
 
 const SignUp: React.FC<{ navigation: any }> = ({ navigation }) => {
     return (
@@ -12,7 +13,10 @@ const SignUp: React.FC<{ navigation: any }> = ({ navigation }) => {
             <Text className="text-lg font-semibold mt-3">Create Account</Text>
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View className="mt-5 bg-gray-200 p-4 rounded-2xl">
-                    <Text className="text-emerald-600 font-bold">Sign up to RaddiGo</Text>
+                    <View className='flex-row items-center justify-between'>
+                        <Text className="text-emerald-600 font-bold">Sign Up to RaddiGo</Text>
+                        <Image className='h-14 w-14 rounded-lg' source={LogoImage} alt='RaddiGo Logo' />
+                    </View>
 
                     <View className="mt-3">
                         <Text className="font-semibold">Username</Text>
