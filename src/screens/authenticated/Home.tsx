@@ -1,12 +1,10 @@
-import { View, Alert } from 'react-native'
-import React, { useState, useRef } from 'react'
+import { View } from 'react-native'
+import React, { useState } from 'react'
 import Header from '../../components/Header'
-import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 
 const Home: React.FC = () => {
-    const mapRef = useRef<MapView>(null);
-    
     // Pickup location (user's current location)
     const [pickupLocation] = useState({ latitude: 37.3318456, longitude: -122.0296002 });
 
@@ -35,8 +33,7 @@ const Home: React.FC = () => {
         <View className='flex-1'>
             <Header />
             <MapView
-                ref={mapRef}
-                provider={PROVIDER_GOOGLE}
+                provider="google"
                 style={{ flex: 1 }}
                 initialRegion={getMapRegion()}
             >
@@ -61,34 +58,11 @@ const Home: React.FC = () => {
                     origin={pickupLocation}
                     destination={dropoffLocation}
                     apikey={GOOGLE_MAPS_APIKEY}
-                    strokeWidth={5}
+                    strokeWidth={4}
                     strokeColor="#10b981"
-                    optimizeWaypoints={true}
-                    onStart={(params) => {
-                        console.log('🚀 Started routing between', params.origin, 'and', params.destination);
-                    }}
-                    onReady={result => {
-                        console.log('✅ Route loaded successfully!');
-                        console.log('Distance:', result.distance, 'km');
-                        console.log('Duration:', result.duration, 'min');
-                        console.log('Coordinates:', result.coordinates.length);
-                        
-                        // Fit map to show entire route
-                        mapRef.current?.fitToCoordinates(result.coordinates, {
-                            edgePadding: {
-                                right: 50,
-                                bottom: 50,
-                                left: 50,
-                                top: 50,
-                            },
-                            animated: true,
-                        });
-                    }}
                     onError={(errorMessage) => {
-                        console.error('❌ Directions Error:', errorMessage);
-                        Alert.alert('Route Error', `Failed to load route: ${errorMessage}`);
+                        console.log('Directions Error:', errorMessage);
                     }}
-                    mode="DRIVING"
                 />
             </MapView>
         </View>
