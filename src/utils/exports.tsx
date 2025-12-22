@@ -1,0 +1,1 @@
+export const apiURL = "https://goldfish-app-imnqz.ondigitalocean.app/api/v1/";

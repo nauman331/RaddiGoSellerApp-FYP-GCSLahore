@@ -5,24 +5,24 @@ import { GoogleIcon, FacebookIcon } from '../../assets/Icons'
 import LogoImage from "../../assets/logo.png"
 import { useDispatch } from 'react-redux'
 import { login, setuser } from '../../store/slices/authSlice'
+import { useSubmit } from "../../apiHooks/useSubmit"
 
 
 
 const SignIn: React.FC<{ navigation: any }> = ({ navigation }) => {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+    const { mutate, isPending, error } = useSubmit({ endpoint: 'login' });
 
     const [email, setEmail] = useState<string>('')
     const [password, setPassword] = useState<string>('')
     const [showPassword, setShowPassword] = useState<boolean>(false)
 
     const Login = () => {
-        try {
-            Alert.alert("Login Info", `Email: ${email}\nPassword: ${password}`);
-            dispatch(login("dummy-auth-token"));
-            dispatch(setuser({ id: 1, name: "John Doe", email: email }));
-        } catch (error) {
-            console.error("Login error:", error);
-        }
+        const response = mutate({
+            email,
+            password
+        })
+        console.log(response);
     }
 
     return (
@@ -76,9 +76,18 @@ const SignIn: React.FC<{ navigation: any }> = ({ navigation }) => {
 
                     <TouchableOpacity
                         onPress={Login}
+                        disabled={isPending}
                         className="bg-emerald-600 mt-6 rounded-full h-12 items-center justify-center">
-                        <Text className="text-white font-bold text-lg">Log In</Text>
+                        <Text className="text-white font-bold text-lg">
+                            {isPending ? 'Logging in...' : 'Log In'}
+                        </Text>
                     </TouchableOpacity>
+
+                    {error && (
+                        <Text className="text-red-600 font-semibold mt-2 text-center">
+                            {error.message}
+                        </Text>
+                    )}
 
                     <TouchableOpacity
                         onPress={() => navigation.navigate("ForgotPassword")}

@@ -8,19 +8,32 @@ import React from "react";
 import { Provider } from "react-redux";
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from "./src/store/store";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+      staleTime: 5 * 60 * 1000,
+    },
+  },
+});
 
 const App: React.FC = () => {
   return (
     <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <SafeAreaProvider>
-          <NavigationContainer>
-            <View className="flex-1 bg-gray-100 p-2">
-              <CombinedNav />
-            </View>
-          </NavigationContainer>
-        </SafeAreaProvider>
-      </PersistGate>
+      <QueryClientProvider client={queryClient}>
+        <PersistGate loading={null} persistor={persistor}>
+          <SafeAreaProvider>
+            <NavigationContainer>
+              <View className="flex-1 bg-gray-100 p-2">
+                <CombinedNav />
+              </View>
+            </NavigationContainer>
+          </SafeAreaProvider>
+        </PersistGate>
+      </QueryClientProvider>
     </Provider>
   )
 }
