@@ -2,6 +2,7 @@ import { apiURL } from "../utils/exports";
 import { useQuery } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
+// import { Alert } from "react-native";
 
 interface UseFetchParams {
     endpoint?: string;
@@ -10,6 +11,7 @@ interface UseFetchParams {
 
 export const useFetch = ({ endpoint, isAuth = false }: UseFetchParams) => {
     const { token } = useSelector((state: RootState) => state.auth);
+
     useQuery({
         queryKey: [endpoint],
         queryFn: async () => {
@@ -19,7 +21,15 @@ export const useFetch = ({ endpoint, isAuth = false }: UseFetchParams) => {
                     ...(isAuth && { Authorization: `Bearer ${token}` }),
                 },
             });
-            return response.json();
-        }
-    })
+
+            const res_data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(res_data.message || "Fetch failed");
+            }
+
+            return res_data;
+        },
+    });
+
 }

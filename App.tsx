@@ -9,6 +9,9 @@ import { Provider } from "react-redux";
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from "./src/store/store";
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { AlertNotificationRoot } from 'react-native-alert-notification';
+
+
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -28,7 +31,9 @@ const App: React.FC = () => {
           <SafeAreaProvider>
             <NavigationContainer>
               <View className="flex-1 bg-gray-100 p-2">
-                <CombinedNav />
+                <AlertNotificationRoot>
+                  <CombinedNav />
+                </AlertNotificationRoot>
               </View>
             </NavigationContainer>
           </SafeAreaProvider>

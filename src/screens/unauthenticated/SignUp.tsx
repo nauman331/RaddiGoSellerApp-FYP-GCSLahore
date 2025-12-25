@@ -3,8 +3,43 @@ import React, { useState } from 'react'
 import { ArrowLeft, Mail, Lock, Eye, User, Phone } from 'lucide-react-native'
 import { GoogleIcon, FacebookIcon } from '../../assets/Icons'
 import LogoImage from "../../assets/logo.png"
+import { useSubmit } from '../../apiHooks/useSubmit'
+import { ALERT_TYPE, Toast } from 'react-native-alert-notification';
 
 const SignUp: React.FC<{ navigation: any }> = ({ navigation }) => {
+    const { mutateAsync, isPending } = useSubmit({
+        endpoint: 'register',
+    });
+
+    const [formData, setFormData] = useState({
+        username: '',
+        email: '',
+        phone: '',
+        password: '',
+    });
+
+    const handleInputChange = (field: string, value: string) => {
+        setFormData((prev) => ({ ...prev, [field]: value }));
+    }
+
+    const Register = async () => {
+        try {
+            await mutateAsync(formData);
+            Toast.show({
+                type: ALERT_TYPE.SUCCESS,
+                title: 'Success',
+                textBody: 'OTP sent to your email. Please verify.',
+            });
+            navigation.navigate('VerifyOTP', { email: formData.email });
+        } catch (error: any) {
+            Toast.show({
+                type: ALERT_TYPE.DANGER,
+                title: 'Error',
+                textBody: error.message || 'Registration failed',
+            });
+        }
+    }
+
     return (
         <View className='bg-white rounded-2xl p-2 flex-1'>
             <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -23,6 +58,8 @@ const SignUp: React.FC<{ navigation: any }> = ({ navigation }) => {
                         <View className="flex-row items-center justify-center mt-2 bg-white px-3 h-14 rounded-lg border border-gray-300">
                             <User />
                             <TextInput
+                                value={formData.username}
+                                onChangeText={(text) => handleInputChange('username', text)}
                                 placeholder="Enter your username"
                                 placeholderTextColor="#9ca3af"
                                 className="flex-1 h-full px-2 py-1 font-bold text-emerald-500"
@@ -35,6 +72,8 @@ const SignUp: React.FC<{ navigation: any }> = ({ navigation }) => {
                         <View className="flex-row items-center justify-center mt-2 bg-white px-3 h-14 rounded-lg border border-gray-300">
                             <Mail />
                             <TextInput
+                                value={formData.email}
+                                onChangeText={(text) => handleInputChange('email', text)}
                                 placeholder="Enter your email"
                                 placeholderTextColor="#9ca3af"
                                 className="flex-1 h-full px-2 py-1 font-bold text-emerald-500"
@@ -48,6 +87,8 @@ const SignUp: React.FC<{ navigation: any }> = ({ navigation }) => {
                         <View className="flex-row items-center justify-center mt-2 bg-white px-3 h-14 rounded-lg border border-gray-300">
                             <Phone />
                             <TextInput
+                                value={formData.phone}
+                                onChangeText={(text) => handleInputChange('phone', text)}
                                 placeholder="Enter your phone number"
                                 placeholderTextColor="#9ca3af"
                                 className="flex-1 h-full px-2 py-1 font-bold text-emerald-500"
@@ -61,6 +102,8 @@ const SignUp: React.FC<{ navigation: any }> = ({ navigation }) => {
                         <View className="flex-row items-center justify-center mt-2 bg-white px-3 h-14 rounded-lg border border-gray-300">
                             <Lock />
                             <TextInput
+                                value={formData.password}
+                                onChangeText={(text) => handleInputChange('password', text)}
                                 placeholder="Enter your Password"
                                 placeholderTextColor="#9ca3af"
                                 className="flex-1 h-full px-2 py-1 font-bold text-emerald-500"
@@ -70,8 +113,8 @@ const SignUp: React.FC<{ navigation: any }> = ({ navigation }) => {
                         </View>
                     </View>
 
-                    <TouchableOpacity className="bg-emerald-600 mt-6 rounded-full h-12 items-center justify-center">
-                        <Text className="text-white font-bold text-lg">Sign Up</Text>
+                    <TouchableOpacity onPress={Register} disabled={isPending} className={`mt-6 rounded-full h-12 items-center justify-center ${isPending ? 'bg-emerald-400' : 'bg-emerald-600'}`}>
+                        <Text className="text-white font-bold text-lg">{isPending ? 'Signing Up...' : 'Sign Up'}</Text>
                     </TouchableOpacity>
 
                     <View className="flex-row items-center my-5">

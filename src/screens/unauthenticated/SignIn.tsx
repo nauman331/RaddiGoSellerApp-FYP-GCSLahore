@@ -1,28 +1,48 @@
-import { View, Text, TouchableOpacity, TextInput, ScrollView, Alert, Image } from 'react-native'
+import { View, Text, TouchableOpacity, TextInput, ScrollView, Image } from 'react-native'
 import React, { useState } from 'react'
 import { ArrowLeft, Mail, Lock, Eye, EyeClosed } from 'lucide-react-native'
 import { GoogleIcon, FacebookIcon } from '../../assets/Icons'
 import LogoImage from "../../assets/logo.png"
 import { useDispatch } from 'react-redux'
-import { login, setuser } from '../../store/slices/authSlice'
+import { login } from '../../store/slices/authSlice'
 import { useSubmit } from "../../apiHooks/useSubmit"
-
+import { ALERT_TYPE, Toast } from 'react-native-alert-notification';
 
 
 const SignIn: React.FC<{ navigation: any }> = ({ navigation }) => {
     const dispatch = useDispatch();
-    const { mutate, isPending, error } = useSubmit({ endpoint: 'login' });
+    const { mutateAsync, isPending } = useSubmit({
+        endpoint: 'login',
+    });
 
     const [email, setEmail] = useState<string>('')
     const [password, setPassword] = useState<string>('')
     const [showPassword, setShowPassword] = useState<boolean>(false)
 
-    const Login = () => {
-        const response = mutate({
-            email,
-            password
-        })
-        console.log(response);
+    const Login = async () => {
+        if (!email || !password) {
+            Toast.show({
+                type: ALERT_TYPE.DANGER,
+                title: 'Error',
+                textBody: 'Please fill in all fields',
+            });
+            return;
+        }
+        try {
+            const response = await mutateAsync({ email, password });
+            dispatch(login(response.token));
+            Toast.show({
+                type: ALERT_TYPE.SUCCESS,
+                title: 'Success',
+                textBody: 'Logged in successfully',
+            });
+        } catch (error: any) {
+            Toast.show({
+                type: ALERT_TYPE.DANGER,
+                title: 'Error',
+                textBody: error.message || 'Login failed',
+            });
+        }
     }
 
     return (
@@ -82,12 +102,6 @@ const SignIn: React.FC<{ navigation: any }> = ({ navigation }) => {
                             {isPending ? 'Logging in...' : 'Log In'}
                         </Text>
                     </TouchableOpacity>
-
-                    {error && (
-                        <Text className="text-red-600 font-semibold mt-2 text-center">
-                            {error.message}
-                        </Text>
-                    )}
 
                     <TouchableOpacity
                         onPress={() => navigation.navigate("ForgotPassword")}

@@ -15,16 +15,22 @@ export const useSubmit = ({ method = "POST", endpoint, isAuth = false }: UseSubm
     const mutation = useMutation({
         mutationFn: async (data: any) => {
             const response = await fetch(`${apiURL}${endpoint}`, {
-                method,
+                method: method,
                 headers: {
                     "Content-Type": "application/json",
                     ...(isAuth && { Authorization: `Bearer ${token}` }),
                 },
                 body: JSON.stringify(data),
             });
-            console.log('Response Status:', response);
-            return response.json();
-        }
+
+            const res_data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(res_data.message || "Submission failed");
+            }
+
+            return res_data;
+        },
     });
 
     return mutation;
