@@ -11,8 +11,6 @@ import { store, persistor } from "./src/store/store";
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AlertNotificationRoot } from 'react-native-alert-notification';
 
-
-
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {

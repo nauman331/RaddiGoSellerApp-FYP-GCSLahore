@@ -31,5 +31,4 @@ export const useFetch = ({ endpoint, isAuth = false }: UseFetchParams) => {
             return res_data;
         },
     });
-
 }

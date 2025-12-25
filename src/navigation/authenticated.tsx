@@ -39,7 +39,7 @@ export default function AuthenticatedStack() {
                         IconComponent = HomeIcon;
                     } else if (route.name === 'Activity') {
                         IconComponent = Activity;
-                    } else if (route.name === 'Rides') {
+                    } else if (route.name === 'Riders') {
                         IconComponent = MapPin;
                     } else if (route.name === 'Profile') {
                         IconComponent = User;
@@ -85,10 +85,10 @@ export default function AuthenticatedStack() {
                 }}
             />
             <Tab.Screen
-                name="Rides"
+                name="Riders"
                 component={Home}
                 options={{
-                    tabBarLabel: 'Rides',
+                    tabBarLabel: 'Riders',
                 }}
             />
             <Tab.Screen
