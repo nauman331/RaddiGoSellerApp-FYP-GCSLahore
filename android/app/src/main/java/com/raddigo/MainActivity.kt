@@ -1,4 +1,4 @@
-package com.trustfarokhtapp
+package com.raddigo
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

@@ -1,4 +1,4 @@
-package com.trustfarokhtapp
+package com.raddigo
 
 import android.app.Application
 import com.facebook.react.PackageList
